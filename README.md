@@ -11,6 +11,8 @@ My personal configuration files - a simple backup for when I get a new machine o
 - `btop.conf` - System monitor configuration
 - `opencode.json.template` - OpenCode editor settings (template)
 - `settings.json.template` - Zed editor settings (template)
+- `cursor-settings.json` - Cursor IDE settings (formatters, theme, etc.)
+- `cursor-keybindings.json` - Cursor custom keybindings
 - `ssh.config` - SSH configuration
 
 ## 🚀 Using These Configs
@@ -37,6 +39,11 @@ cp btop.conf ~/.config/btop/
 mkdir -p ~/.config/opencode ~/.config/zed
 cp opencode.json.template ~/.config/opencode/opencode.json
 cp settings.json.template ~/.config/zed/settings.json
+
+# Cursor settings
+mkdir -p ~/Library/Application\ Support/Cursor/User
+cp cursor-settings.json ~/Library/Application\ Support/Cursor/User/settings.json
+cp cursor-keybindings.json ~/Library/Application\ Support/Cursor/User/keybindings.json
 
 # Then edit and add your actual API keys:
 vim ~/.config/opencode/opencode.json
@@ -71,6 +78,8 @@ cp ~/.vimrc .
 cp ~/.gitconfig .
 cp ~/.config/btop/btop.conf .
 cp ~/.ssh/config ssh.config
+cp ~/Library/Application\ Support/Cursor/User/settings.json cursor-settings.json
+cp ~/Library/Application\ Support/Cursor/User/keybindings.json cursor-keybindings.json
 
 git add -u
 git commit -m "Update configs"
