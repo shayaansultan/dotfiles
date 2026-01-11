@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Secrets - never commit actual config files with API keys
+opencode.json
+settings.json
+
+# Editor temporary files
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
