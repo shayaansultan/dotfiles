@@ -138,9 +138,54 @@ export PATH="$NVM_BIN:$PATH"
 eval "$(zoxide init zsh)"
 # eval "$(starship init zsh)"  # Disabled - using Oh My Zsh robbyrussell theme instead
 
+# fzf shell integration (Ctrl+R for history, Ctrl+T for files, Alt+C for cd)
+source <(fzf --zsh)
+
+# trash (keg-only, needs explicit PATH)
+export PATH="/opt/homebrew/opt/trash/bin:$PATH"
+
 # Modern tool aliases
 alias ls='eza'
 alias ll='eza -la --git'
 alias tree='eza --tree'
 alias cat='bat -p'
 alias cheat='bat ~/.cli-tools-cheatsheet.md'
+alias fzp='fzf --preview "bat --color=always {}"'
+
+# bun completions
+[ -s "/Users/shayaan/.bun/_bun" ] && source "/Users/shayaan/.bun/_bun"
+
+# bun global bin
+export PATH="/Users/shayaan/.bun/bin:$PATH"
+
+##########
+# Python #
+##########
+
+# Create virtual environment
+alias env_new="python3 -m venv venv"
+
+# Activate virtual environment
+alias env_act="source venv/bin/activate"
+
+#######
+# Git #
+#######
+
+# Undo your last commit but keep the changes
+alias undo="git reset HEAD~"
+
+# Display your last 20 git branches by recency
+alias recents="git branch --sort=-committerdate | head -20"
+
+# Search all local git branches for branches containing a substring
+function search() {
+    if [ -z "$1" ]; then
+        echo "Usage: search <pattern>"
+        return 1
+    fi
+
+    git show-ref -s --heads | xargs git grep "$1" | cut -d: -f1 | sort -u | while read commit; do
+        git branch -a --contains "$commit"
+    done | sort -u
+}
