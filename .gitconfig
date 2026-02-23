@@ -30,3 +30,5 @@
 	wl = worktree list
 	wr = worktree remove --force
 	get = !git fetch --all --prune && git pull
+	f = !git fetch --all --prune && git pull
+	p = push
