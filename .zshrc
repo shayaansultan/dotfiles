@@ -151,6 +151,7 @@ alias tree='eza --tree'
 alias cat='bat -p'
 alias cheat='bat ~/.cli-tools-cheatsheet.md'
 alias fzp='fzf --preview "bat --color=always {}"'
+alias op='opencode'
 
 # bun completions
 [ -s "/Users/shayaan/.bun/_bun" ] && source "/Users/shayaan/.bun/_bun"
