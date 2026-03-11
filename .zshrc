@@ -153,6 +153,15 @@ alias cheat='bat ~/.cli-tools-cheatsheet.md'
 alias fzp='fzf --preview "bat --color=always {}"'
 alias op='opencode'
 
+# Terminal launchers (like `code .` but for other terminals)
+ghostty() {
+  open -na Ghostty.app --args --working-directory="${1:-$(pwd)}"
+}
+
+warp() {
+  open -a "Warp" "${1:-.}"
+}
+
 # bun completions
 [ -s "/Users/shayaan/.bun/_bun" ] && source "/Users/shayaan/.bun/_bun"
 
