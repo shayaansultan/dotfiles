@@ -150,6 +150,7 @@ alias ll='eza -la --git'
 alias tree='eza --tree'
 alias cat='bat -p'
 alias cheat='bat ~/.cli-tools-cheatsheet.md'
+alias sublime='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl'
 alias fzp='fzf --preview "bat --color=always {}"'
 alias op='opencode'
 
@@ -187,6 +188,28 @@ alias undo="git reset HEAD~"
 
 # Display your last 20 git branches by recency
 alias recents="git branch --sort=-committerdate | head -20"
+
+# Toggle git tracking of .vscode/settings.json in the current repo
+function vscode-settings() {
+    if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+        echo "Not inside a git repository"
+        return 1
+    fi
+
+    local flags=$(git ls-files -v .vscode/settings.json 2>/dev/null)
+    if [ -z "$flags" ]; then
+        echo ".vscode/settings.json is not tracked by git"
+        return 1
+    fi
+
+    if [[ "$flags" == S* ]]; then
+        git update-index --no-skip-worktree .vscode/settings.json
+        echo "✓ .vscode/settings.json changes are now TRACKED by git"
+    else
+        git update-index --skip-worktree .vscode/settings.json
+        echo "✓ .vscode/settings.json changes are now IGNORED by git"
+    fi
+}
 
 # Search all local git branches for branches containing a substring
 function search() {
