@@ -153,6 +153,7 @@ alias cheat='bat ~/.cli-tools-cheatsheet.md'
 alias sublime='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl'
 alias fzp='fzf --preview "bat --color=always {}"'
 alias op='opencode'
+alias ccp='CLAUDE_CODE_NO_FLICKER=1 claude --model "claude-opus-4-6[1m]" --dangerously-skip-permissions'
 
 # Terminal launchers (like `code .` but for other terminals)
 ghostty() {
