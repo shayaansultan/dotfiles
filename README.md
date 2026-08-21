@@ -5,15 +5,16 @@ My personal configuration files - a simple backup for when I get a new machine o
 ## 📦 What's Included
 
 - `.zshrc` - Shell configuration (Oh My Zsh, aliases, modern CLI tools)
+- `.zprofile` - Homebrew environment setup for login shells
 - `.vimrc` - Vim editor configuration with plugins
 - `.gitconfig` - Git settings with Delta for pretty diffs
+- `uv.toml` - Require uv-managed Python interpreters
 - `.cli-tools-cheatsheet.md` - Quick reference for modern CLI tools
 - `btop.conf` - System monitor configuration
 - `opencode.json.template` - OpenCode editor settings (template)
 - `settings.json.template` - Zed editor settings (template)
-- `cursor-settings.json` - Cursor IDE settings (formatters, theme, etc.)
-- `cursor-keybindings.json` - Cursor custom keybindings
-- `ssh.config` - SSH configuration
+
+SSH configuration is intentionally excluded because it contains machine-specific includes.
 
 ## 🚀 Using These Configs
 
@@ -26,10 +27,14 @@ cd dotfiles
 
 # Copy configs to home directory
 cp .zshrc ~/
+cp .zprofile ~/
 cp .vimrc ~/
 cp .gitconfig ~/
 cp .cli-tools-cheatsheet.md ~/
-cp ssh.config ~/.ssh/config
+
+# Require uv-managed Python interpreters
+mkdir -p ~/.config/uv
+cp uv.toml ~/.config/uv/uv.toml
 
 # Copy btop config
 mkdir -p ~/.config/btop
@@ -39,11 +44,6 @@ cp btop.conf ~/.config/btop/
 mkdir -p ~/.config/opencode ~/.config/zed
 cp opencode.json.template ~/.config/opencode/opencode.json
 cp settings.json.template ~/.config/zed/settings.json
-
-# Cursor settings
-mkdir -p ~/Library/Application\ Support/Cursor/User
-cp cursor-settings.json ~/Library/Application\ Support/Cursor/User/settings.json
-cp cursor-keybindings.json ~/Library/Application\ Support/Cursor/User/keybindings.json
 
 # Then edit and add your actual API keys:
 vim ~/.config/opencode/opencode.json
@@ -61,6 +61,7 @@ vim ~/.config/zed/settings.json
 Modern CLI tools configured in these dotfiles:
 
 - **Shell**: zsh with Oh My Zsh
+- **Python**: uv-managed interpreters and environments
 - **Navigation**: `eza` (ls), `fd` (find), `zoxide` (smart cd)
 - **Search**: `rg` (grep), `fzf` (fuzzy finder)
 - **Git**: `lazygit`, `delta`
@@ -74,12 +75,11 @@ When you update your configs locally:
 ```bash
 cd ~/Desktop/dotfiles
 cp ~/.zshrc .
+cp ~/.zprofile .
 cp ~/.vimrc .
 cp ~/.gitconfig .
+cp ~/.config/uv/uv.toml uv.toml
 cp ~/.config/btop/btop.conf .
-cp ~/.ssh/config ssh.config
-cp ~/Library/Application\ Support/Cursor/User/settings.json cursor-settings.json
-cp ~/Library/Application\ Support/Cursor/User/keybindings.json cursor-keybindings.json
 
 git add -u
 git commit -m "Update configs"

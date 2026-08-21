@@ -1,0 +1,2 @@
+# Project Python interpreters must be installed and managed by uv.
+python-preference = "only-managed"
