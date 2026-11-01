@@ -61,7 +61,7 @@ vim ~/.config/zed/settings.json
 Modern CLI tools configured in these dotfiles:
 
 - **Shell**: zsh with Oh My Zsh
-- **Navigation**: `eza` (ls), `fd` (find), `zoxide` (smart cd)
+- **Navigation**: `fd` (find), `zoxide` (smart cd)
 - **Search**: `rg` (grep), `fzf` (fuzzy finder)
 - **Git**: `lazygit`, `delta`
 - **Viewers**: `bat` (cat), `btop` (system monitor)

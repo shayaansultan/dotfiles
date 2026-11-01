@@ -145,9 +145,6 @@ source <(fzf --zsh)
 export PATH="/opt/homebrew/opt/trash/bin:$PATH"
 
 # Modern tool aliases
-alias ls='eza'
-alias ll='eza -la --git'
-alias tree='eza --tree'
 alias cat='bat -p'
 alias cheat='bat ~/.cli-tools-cheatsheet.md'
 alias sublime='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl'
