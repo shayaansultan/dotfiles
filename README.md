@@ -72,7 +72,7 @@ Modern CLI tools configured in these dotfiles:
 When you update your configs locally:
 
 ```bash
-cd ~/Desktop/dotfiles
+cd ~/Developer/dotfiles
 cp ~/.zshrc .
 cp ~/.vimrc .
 cp ~/.gitconfig .
