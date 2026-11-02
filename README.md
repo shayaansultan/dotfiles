@@ -17,7 +17,7 @@ Cursor uses its default keybindings; no custom keybindings file is restored. Ear
 
 ## Restore on a new machine
 
-Install Homebrew, Oh My Zsh and its `zsh-autosuggestions` plugin. The current shell setup uses `thefuck`, `zoxide`, `fzf` and nvm; its aliases and Git settings use Bun, uv, `bat`, `delta`, `gh` and `lazygit`. Install the tools you intend to use. LM Studio and Vite+ paths are optional.
+Install Homebrew, Oh My Zsh and its `zsh-autosuggestions` plugin. The current shell setup uses `thefuck`, `zoxide`, `fzf` and nvm; its aliases and Git settings use uv, `bat`, `delta`, `gh` and `lazygit`. Install the tools you intend to use. LM Studio and Vite+ paths are optional.
 
 On an Apple Silicon Mac, make sure `~/.zprofile` contains Homebrew's login-shell setup before opening a shell with the restored `.zshrc`:
 
