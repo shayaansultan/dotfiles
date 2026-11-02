@@ -16,3 +16,6 @@ settings.json
 
 # Logs
 *.log
+
+# Machine-specific shell settings
+.zshrc.local

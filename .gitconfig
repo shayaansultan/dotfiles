@@ -28,3 +28,9 @@
 	f = !git fetch --all --prune && git pull
 	p = push
 	cm = commit -m
+[credential "https://github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
