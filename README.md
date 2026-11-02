@@ -17,7 +17,15 @@ Cursor uses its default keybindings; no custom keybindings file is restored. Ear
 
 ## Restore on a new machine
 
-Install the referenced tools first, then clone into the canonical project location:
+Install Homebrew, Oh My Zsh and its `zsh-autosuggestions` plugin. The current shell setup uses `thefuck`, `zoxide`, `fzf` and nvm; its aliases and Git settings use Bun, uv, `bat`, `delta`, `gh` and `lazygit`. Install the tools you intend to use. LM Studio and Vite+ paths are optional.
+
+On an Apple Silicon Mac, make sure `~/.zprofile` contains Homebrew's login-shell setup before opening a shell with the restored `.zshrc`:
+
+```sh
+eval "$(/opt/homebrew/bin/brew shellenv)"
+```
+
+This is already present on the current laptop. On a new machine, add it once and start a new login shell. Then clone into the canonical project location:
 
 ```sh
 mkdir -p "$HOME/Developer"
@@ -40,7 +48,7 @@ cp opencode.json.template "$HOME/.config/opencode/opencode.json"
 cp settings.json.template "$HOME/.config/zed/settings.json"
 ```
 
-Set up credentials locally after copying the templates. GitHub authentication uses the already configured GitHub CLI account. Conductor creates `~/.ssh/conductor_config`; this repository stores only the include, not generated hosts or private keys.
+Set up credentials locally after copying the templates. On a new machine, run `gh auth login` after installing `gh` and complete sign-in yourself; the credential helper then uses that account. Conductor creates `~/.ssh/conductor_config`; this repository stores only the include, not generated hosts or private keys.
 
 ## Machine-specific shell settings
 
