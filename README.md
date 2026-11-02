@@ -1,91 +1,70 @@
-# 🏠 Dotfiles
+# Dotfiles
 
-My personal configuration files - a simple backup for when I get a new machine or need to restore settings.
+Backups of the configuration currently used on the laptop. Files are copied into place rather than symlinked.
 
-## 📦 What's Included
+## Included
 
-- `.zshrc` - Shell configuration (Oh My Zsh, aliases, modern CLI tools)
-- `.vimrc` - Vim editor configuration with plugins
-- `.gitconfig` - Git settings with Delta for pretty diffs
-- `.cli-tools-cheatsheet.md` - Quick reference for modern CLI tools
-- `btop.conf` - System monitor configuration
-- `opencode.json.template` - OpenCode editor settings (template)
-- `settings.json.template` - Zed editor settings (template)
-- `cursor-settings.json` - Cursor IDE settings (formatters, theme, etc.)
-- `cursor-keybindings.json` - Cursor custom keybindings
-- `ssh.config` - SSH configuration
+- `.zshrc`: shell configuration, PATH setup, aliases and uv environments.
+- `.vimrc`: Vim configuration and plugins.
+- `.gitconfig`: Git settings, Delta and GitHub CLI credential helpers.
+- `.cli-tools-cheatsheet.md`: command-line reference.
+- `btop.conf`: system-monitor settings.
+- `ssh.config`: the include for Conductor-managed SSH configuration.
+- `cursor-settings.json`: the current minimal Cursor preferences.
+- `opencode.json.template` and `settings.json.template`: OpenCode and Zed templates, without actual credentials.
 
-## 🚀 Using These Configs
+Cursor uses its default keybindings; no custom keybindings file is restored. Earlier settings and keybindings remain in Git history.
 
-### On a new machine:
+## Restore on a new machine
 
-```bash
-# Clone the repo
-git clone https://github.com/shayaansultan/dotfiles.git
-cd dotfiles
+Install Homebrew, Oh My Zsh and its `zsh-autosuggestions` plugin. The current shell setup uses `thefuck`, `zoxide`, `fzf` and nvm; its aliases and Git settings use uv, `bat`, `delta`, `gh` and `lazygit`. Install the tools you intend to use. LM Studio and Vite+ paths are optional.
 
-# Copy configs to home directory
-cp .zshrc ~/
-cp .vimrc ~/
-cp .gitconfig ~/
-cp .cli-tools-cheatsheet.md ~/
-cp ssh.config ~/.ssh/config
+On an Apple Silicon Mac, make sure `~/.zprofile` contains Homebrew's login-shell setup before opening a shell with the restored `.zshrc`:
 
-# Copy btop config
-mkdir -p ~/.config/btop
-cp btop.conf ~/.config/btop/
-
-# For configs with API keys, use templates
-mkdir -p ~/.config/opencode ~/.config/zed
-cp opencode.json.template ~/.config/opencode/opencode.json
-cp settings.json.template ~/.config/zed/settings.json
-
-# Cursor settings
-mkdir -p ~/Library/Application\ Support/Cursor/User
-cp cursor-settings.json ~/Library/Application\ Support/Cursor/User/settings.json
-cp cursor-keybindings.json ~/Library/Application\ Support/Cursor/User/keybindings.json
-
-# Then edit and add your actual API keys:
-vim ~/.config/opencode/opencode.json
-vim ~/.config/zed/settings.json
+```sh
+eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
 
-## 🔐 Security Note
+This is already present on the current laptop. On a new machine, add it once and start a new login shell. Then clone into the canonical project location:
 
-- Files with `.template` suffix need your API keys added after copying
-- Actual config files with secrets are gitignored and never committed
-- Your API keys stay local only
+```sh
+mkdir -p "$HOME/Developer"
+git clone https://github.com/shayaansultan/dotfiles.git "$HOME/Developer/dotfiles"
+cd "$HOME/Developer/dotfiles"
 
-## 🛠️ Tools Referenced
+cp .zshrc .vimrc .gitconfig .cli-tools-cheatsheet.md "$HOME/"
 
-Modern CLI tools configured in these dotfiles:
+install -d -m 700 "$HOME/.ssh"
+install -m 600 ssh.config "$HOME/.ssh/config"
 
-- **Shell**: zsh with Oh My Zsh
-- **Navigation**: `fd` (find), `zoxide` (smart cd)
-- **Search**: `rg` (grep), `fzf` (fuzzy finder)
-- **Git**: `lazygit`, `delta`
-- **Viewers**: `bat` (cat), `btop` (system monitor)
-- **Editor**: vim with NERDTree, fzf, ALE
+mkdir -p "$HOME/.config/btop"
+cp btop.conf "$HOME/.config/btop/btop.conf"
 
-## 📝 Updating
+mkdir -p "$HOME/Library/Application Support/Cursor/User"
+cp cursor-settings.json "$HOME/Library/Application Support/Cursor/User/settings.json"
 
-When you update your configs locally:
-
-```bash
-cd ~/Developer/dotfiles
-cp ~/.zshrc .
-cp ~/.vimrc .
-cp ~/.gitconfig .
-cp ~/.config/btop/btop.conf .
-cp ~/.ssh/config ssh.config
-cp ~/Library/Application\ Support/Cursor/User/settings.json cursor-settings.json
-cp ~/Library/Application\ Support/Cursor/User/keybindings.json cursor-keybindings.json
-
-git add -u
-git commit -m "Update configs"
-git push
+mkdir -p "$HOME/.config/opencode" "$HOME/.config/zed"
+cp opencode.json.template "$HOME/.config/opencode/opencode.json"
+cp settings.json.template "$HOME/.config/zed/settings.json"
 ```
 
----
+Set up credentials locally after copying the templates. On a new machine, run `gh auth login` after installing `gh` and complete sign-in yourself; the credential helper then uses that account. Conductor creates `~/.ssh/conductor_config`; this repository stores only the include, not generated hosts or private keys.
 
-**Simple backup approach - no fancy symlinks, just copy paste when needed!**
+## Machine-specific shell settings
+
+The shared `.zshrc` loads `~/.zshrc.local` when that file exists. Keep the laptop's Switchboard signing identity and any other machine-specific values there. The file is optional and ignored by Git. Create it locally with permissions `600` when needed; do not copy its values into this public repository.
+
+## Update the backups
+
+```sh
+cd "$HOME/Developer/dotfiles"
+cp "$HOME/.zshrc" "$HOME/.vimrc" "$HOME/.gitconfig" "$HOME/.cli-tools-cheatsheet.md" .
+cp "$HOME/.config/btop/btop.conf" btop.conf
+cp "$HOME/.ssh/config" ssh.config
+cp "$HOME/Library/Application Support/Cursor/User/settings.json" cursor-settings.json
+
+git diff --check
+git diff
+```
+
+Review the diff before committing. Keep signing identities, private keys, tokens, generated SSH hosts, `.zshrc.local` and actual secret-bearing application configs local. Changes intended for sharing go into the tracked files; earlier versions remain recoverable from Git history.

@@ -103,10 +103,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 eval $(thefuck --alias)
 
 # Added by Windsurf
@@ -117,10 +113,10 @@ export PATH=$HOME/.local/bin:$PATH
 
 
 # pnpm
-export PNPM_HOME="/Users/shayaansultan/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
 
@@ -128,11 +124,6 @@ esac
 export PATH="/Users/shayaansultan/.antigravity/antigravity/bin:$PATH"
 alias lg="lazygit"
 export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
-export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-export PATH="$NVM_BIN:$PATH"
 
 # Modern CLI tools
 eval "$(zoxide init zsh)"
@@ -161,21 +152,15 @@ warp() {
   open -a "Warp" "${1:-.}"
 }
 
-# bun completions
-[ -s "/Users/shayaan/.bun/_bun" ] && source "/Users/shayaan/.bun/_bun"
-
-# bun global bin
-export PATH="/Users/shayaan/.bun/bin:$PATH"
-
 ##########
 # Python #
 ##########
 
 # Create virtual environment
-alias env_new="python3 -m venv venv"
+alias env_new="uv venv"
 
 # Activate virtual environment
-alias env_act="source venv/bin/activate"
+alias env_act="source .venv/bin/activate"
 
 #######
 # Git #
@@ -220,3 +205,25 @@ function search() {
         git branch -a --contains "$commit"
     done | sort -u
 }
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:$HOME/.lmstudio/bin"
+# End of LM Studio CLI section
+
+# Node.js development runtime (load after all other PATH configuration)
+export NVM_DIR="$HOME/.nvm"
+[[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
+[[ -s "$NVM_DIR/bash_completion" ]] && source "$NVM_DIR/bash_completion"
+
+# Keep the first occurrence of each PATH entry.
+typeset -U path PATH
+
+# Vite+ bin (https://viteplus.dev)
+if [[ -f "$HOME/.config/vite-plus/env" ]]; then
+  source "$HOME/.config/vite-plus/env"
+fi
+
+# Optional machine-specific settings. This file stays outside Git.
+if [[ -f "$HOME/.zshrc.local" ]]; then
+  source "$HOME/.zshrc.local"
+fi
