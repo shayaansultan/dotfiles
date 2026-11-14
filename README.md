@@ -55,7 +55,7 @@ Set up credentials locally after copying the templates. On a new machine, run `g
 `windows/` holds the Windows counterparts. Projects live in `Desktop\Developer` on Windows.
 
 - `windows/profile.ps1`: the shell setup from `.zshrc` for PowerShell 5.1 and 7, with zoxide, fnm for Node, fzf key bindings through PSFzf, and the same aliases.
-- `windows/bootstrap.ps1`: installs the CLI tools with scoop, applies the `.gitconfig` settings, adds `~\.local\bin` (launchers such as `agentfiles.cmd`) and `~\.bun\bin` (`bun add -g` tools such as `codex`) to the user PATH, points both PowerShell profiles at `windows/profile.ps1`, and copies the cheatsheet and `.vimrc`. It needs no admin rights and is safe to rerun after a pull.
+- `windows/bootstrap.ps1`: installs the CLI tools with scoop, applies the `.gitconfig` settings, adds `~\.local\bin` (launchers such as `agentfiles.cmd`) and `~\.bun\bin` (`bun add -g` tools such as `codex`) to the user PATH, tells Claude Code where Scoop's Git Bash is (`CLAUDE_CODE_GIT_BASH_PATH`, needed for `.sh` hooks), points both PowerShell profiles at `windows/profile.ps1`, and copies the cheatsheet and `.vimrc`. It needs no admin rights and is safe to rerun after a pull.
 
 ```powershell
 Set-ExecutionPolicy -Scope CurrentUser RemoteSigned

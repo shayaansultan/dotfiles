@@ -61,6 +61,12 @@ foreach ($dir in 'WindowsPowerShell', 'PowerShell') {
     if ((Test-Path $file) -and ((Get-Content $file -Raw) -match [regex]::Escape($shared))) { continue }
     Add-Content -Path $file -Value $stub -Encoding utf8
 }
+# Claude Code runs `.sh` hooks and its Bash tool through Git Bash, and finds
+# Git for Windows only in its standard install location, not Scoop's.
+$gitBash = Join-Path $HOME 'scoop\apps\git\current\bin\bash.exe'
+if (Test-Path $gitBash) {
+    [Environment]::SetEnvironmentVariable('CLAUDE_CODE_GIT_BASH_PATH', $gitBash, 'User')
+}
 if (Get-Command pwsh -ErrorAction SilentlyContinue) {
     pwsh -NoProfile -Command "if (-not (Get-Module -ListAvailable PSFzf)) { Install-PSResource PSFzf -Repository PSGallery -Scope CurrentUser -TrustRepository }"
 }
