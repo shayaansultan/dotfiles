@@ -42,13 +42,15 @@ $git = [ordered]@{
 }
 foreach ($key in $git.Keys) { git config --global $key $git[$key] }
 
-# 3. Shell: put ~\.local\bin (agentfiles.cmd and other launchers) on the user
-# PATH, and point both PowerShell editions' profiles at windows/profile.ps1.
-$localBin = Join-Path $HOME '.local\bin'
-New-Item -ItemType Directory -Force $localBin | Out-Null
-$userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
-if (($userPath -split ';') -notcontains $localBin) {
-    [Environment]::SetEnvironmentVariable('Path', "$userPath;$localBin", 'User')
+# 3. Shell: put ~\.local\bin (agentfiles.cmd and other launchers) and
+# ~\.bun\bin (`bun add -g` tools such as codex) on the user PATH, and point
+# both PowerShell editions' profiles at windows/profile.ps1.
+foreach ($bin in (Join-Path $HOME '.local\bin'), (Join-Path $HOME '.bun\bin')) {
+    New-Item -ItemType Directory -Force $bin | Out-Null
+    $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+    if (($userPath -split ';') -notcontains $bin) {
+        [Environment]::SetEnvironmentVariable('Path', "$userPath;$bin", 'User')
+    }
 }
 $shared = Join-Path $PSScriptRoot 'profile.ps1'
 $docs = [Environment]::GetFolderPath('MyDocuments')
