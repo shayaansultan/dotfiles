@@ -50,6 +50,32 @@ cp settings.json.template "$HOME/.config/zed/settings.json"
 
 Set up credentials locally after copying the templates. On a new machine, run `gh auth login` after installing `gh` and complete sign-in yourself; the credential helper then uses that account. Conductor creates `~/.ssh/conductor_config`; this repository stores only the include, not generated hosts or private keys.
 
+## Restore on Windows
+
+`windows/` holds the Windows counterparts. Projects live in `Desktop\Developer` on Windows.
+
+- `windows/profile.ps1`: the shell setup from `.zshrc` for PowerShell 5.1 and 7, with zoxide, fnm for Node, fzf key bindings through PSFzf, and the same aliases.
+- `windows/bootstrap.ps1`: installs the CLI tools with scoop, applies the `.gitconfig` settings, adds `~\.local\bin` (launchers such as `agentfiles.cmd`) and `~\.bun\bin` (`bun add -g` tools such as `codex`) to the user PATH, tells Claude Code where Scoop's Git Bash is (`CLAUDE_CODE_GIT_BASH_PATH`, needed for `.sh` hooks), points both PowerShell profiles at `windows/profile.ps1`, and copies the cheatsheet and `.vimrc`. It needs no admin rights and is safe to rerun after a pull.
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+irm get.scoop.sh | iex; scoop install git
+git clone https://github.com/shayaansultan/dotfiles.git "$HOME\Desktop\Developer\dotfiles"
+& "$HOME\Desktop\Developer\dotfiles\windows\bootstrap.ps1"
+gh auth login; gh auth setup-git
+```
+
+Git on Windows uses LF line endings (`core.autocrlf=false`), because scoop's Git converts to CRLF by default and that breaks formatter checks in the repositories. The `.gitconfig` copy is applied with `git config`, so the `gh` credential helper that `gh auth setup-git` writes stays in place.
+
+The bootstrap installs `ffmpeg` and `whisper-cpp` for the agentfiles local-audio-transcription skill, but not its 148 MB model. Download that once:
+
+```powershell
+New-Item -ItemType Directory -Force "$HOME\.cache\whisper-models" | Out-Null
+Invoke-WebRequest https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.en.bin -OutFile "$HOME\.cache\whisper-models\ggml-base.en.bin"
+```
+
+Machine-specific PowerShell settings go in `~\.profile.local.ps1`, which the profile loads when it exists and Git never sees.
+
 ## Machine-specific shell settings
 
 The shared `.zshrc` loads `~/.zshrc.local` when that file exists. Keep the laptop's Switchboard signing identity and any other machine-specific values there. The file is optional and ignored by Git. Create it locally with permissions `600` when needed; do not copy its values into this public repository.
