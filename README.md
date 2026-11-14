@@ -67,6 +67,13 @@ gh auth login; gh auth setup-git
 
 Git on Windows uses LF line endings (`core.autocrlf=false`), because scoop's Git converts to CRLF by default and that breaks formatter checks in the repositories. The `.gitconfig` copy is applied with `git config`, so the `gh` credential helper that `gh auth setup-git` writes stays in place.
 
+The bootstrap installs `ffmpeg` and `whisper-cpp` for the agentfiles local-audio-transcription skill, but not its 148 MB model. Download that once:
+
+```powershell
+New-Item -ItemType Directory -Force "$HOME\.cache\whisper-models" | Out-Null
+Invoke-WebRequest https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-base.en.bin -OutFile "$HOME\.cache\whisper-models\ggml-base.en.bin"
+```
+
 Machine-specific PowerShell settings go in `~\.profile.local.ps1`, which the profile loads when it exists and Git never sees.
 
 ## Machine-specific shell settings

@@ -14,11 +14,12 @@ $repo = Split-Path $PSScriptRoot -Parent
 # 1. CLI tools: the Windows equivalents of the Homebrew tools .zshrc uses.
 $tools = @(
     'gh', 'bun', 'uv', 'fnm', 'ripgrep', 'fd', 'fzf', 'bat', 'delta',
-    'zoxide', 'lazygit', 'jq', 'tealdeer', 'vim', 'pwsh'
+    'zoxide', 'lazygit', 'jq', 'tealdeer', 'vim', 'pwsh',
+    'ffmpeg', 'whisper-cpp'  # the agentfiles local-audio-transcription skill
 )
 if (-not ((scoop bucket list).Name -contains 'extras')) { scoop bucket add extras }  # lazygit
 $installed = (scoop list 6>$null | ForEach-Object { $_.Name })
-foreach ($tool in $tools + 'lazygit') {
+foreach ($tool in $tools) {
     if ($installed -contains $tool) { continue }
     if ($tool -eq 'gh' -and (Get-Command gh -ErrorAction SilentlyContinue)) { continue }  # winget install
     scoop install $tool
