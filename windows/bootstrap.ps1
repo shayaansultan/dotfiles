@@ -42,7 +42,14 @@ $git = [ordered]@{
 }
 foreach ($key in $git.Keys) { git config --global $key $git[$key] }
 
-# 3. Shell: point both PowerShell editions' profiles at windows/profile.ps1.
+# 3. Shell: put ~\.local\bin (agentfiles.cmd and other launchers) on the user
+# PATH, and point both PowerShell editions' profiles at windows/profile.ps1.
+$localBin = Join-Path $HOME '.local\bin'
+New-Item -ItemType Directory -Force $localBin | Out-Null
+$userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
+if (($userPath -split ';') -notcontains $localBin) {
+    [Environment]::SetEnvironmentVariable('Path', "$userPath;$localBin", 'User')
+}
 $shared = Join-Path $PSScriptRoot 'profile.ps1'
 $docs = [Environment]::GetFolderPath('MyDocuments')
 $stub = ". '$shared'"
